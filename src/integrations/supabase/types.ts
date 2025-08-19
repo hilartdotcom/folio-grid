@@ -14,7 +14,256 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      companies: {
+        Row: {
+          created_at: string
+          deleted_at: string | null
+          domain: string | null
+          hq_country: string | null
+          id: string
+          industry: string | null
+          name: string
+          size: number | null
+          tags: string[] | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          deleted_at?: string | null
+          domain?: string | null
+          hq_country?: string | null
+          id?: string
+          industry?: string | null
+          name: string
+          size?: number | null
+          tags?: string[] | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          deleted_at?: string | null
+          domain?: string | null
+          hq_country?: string | null
+          id?: string
+          industry?: string | null
+          name?: string
+          size?: number | null
+          tags?: string[] | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      contacts: {
+        Row: {
+          company_id: string | null
+          country: string | null
+          created_at: string
+          deleted_at: string | null
+          email: string | null
+          first_name: string
+          id: string
+          last_name: string
+          phone: string | null
+          tags: string[] | null
+          title: string | null
+          updated_at: string
+        }
+        Insert: {
+          company_id?: string | null
+          country?: string | null
+          created_at?: string
+          deleted_at?: string | null
+          email?: string | null
+          first_name: string
+          id?: string
+          last_name: string
+          phone?: string | null
+          tags?: string[] | null
+          title?: string | null
+          updated_at?: string
+        }
+        Update: {
+          company_id?: string | null
+          country?: string | null
+          created_at?: string
+          deleted_at?: string | null
+          email?: string | null
+          first_name?: string
+          id?: string
+          last_name?: string
+          phone?: string | null
+          tags?: string[] | null
+          title?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "contacts_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      export_jobs: {
+        Row: {
+          created_at: string
+          error_message: string | null
+          file_url: string | null
+          filters_json: string
+          id: string
+          status: Database["public"]["Enums"]["job_status"]
+          table_name: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          error_message?: string | null
+          file_url?: string | null
+          filters_json: string
+          id?: string
+          status?: Database["public"]["Enums"]["job_status"]
+          table_name: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          error_message?: string | null
+          file_url?: string | null
+          filters_json?: string
+          id?: string
+          status?: Database["public"]["Enums"]["job_status"]
+          table_name?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      licenses: {
+        Row: {
+          company_id: string | null
+          created_at: string
+          deleted_at: string | null
+          end_date: string | null
+          id: string
+          license_key: string
+          notes: string | null
+          product: string
+          seats: number | null
+          start_date: string | null
+          status: Database["public"]["Enums"]["license_status"]
+          tags: string[] | null
+          updated_at: string
+        }
+        Insert: {
+          company_id?: string | null
+          created_at?: string
+          deleted_at?: string | null
+          end_date?: string | null
+          id?: string
+          license_key: string
+          notes?: string | null
+          product: string
+          seats?: number | null
+          start_date?: string | null
+          status?: Database["public"]["Enums"]["license_status"]
+          tags?: string[] | null
+          updated_at?: string
+        }
+        Update: {
+          company_id?: string | null
+          created_at?: string
+          deleted_at?: string | null
+          end_date?: string | null
+          id?: string
+          license_key?: string
+          notes?: string | null
+          product?: string
+          seats?: number | null
+          start_date?: string | null
+          status?: Database["public"]["Enums"]["license_status"]
+          tags?: string[] | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "licenses_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          id: string
+          name: string | null
+          role: Database["public"]["Enums"]["app_role"]
+          theme: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name?: string | null
+          role?: Database["public"]["Enums"]["app_role"]
+          theme?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string | null
+          role?: Database["public"]["Enums"]["app_role"]
+          theme?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      saved_views: {
+        Row: {
+          config_json: string
+          created_at: string
+          description: string | null
+          id: string
+          is_default: boolean
+          name: string
+          table_name: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          config_json: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_default?: boolean
+          name: string
+          table_name: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          config_json?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_default?: boolean
+          name?: string
+          table_name?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +272,9 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "analyst" | "viewer"
+      job_status: "queued" | "processing" | "done" | "error"
+      license_status: "active" | "trial" | "expired" | "suspended"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +401,10 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "analyst", "viewer"],
+      job_status: ["queued", "processing", "done", "error"],
+      license_status: ["active", "trial", "expired", "suspended"],
+    },
   },
 } as const
