@@ -1,60 +1,60 @@
 import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import {
-  Home,
-  Users,
-  Building2,
-  Key,
-  Settings,
-  LogOut,
-  User,
-  BookOpen,
-  Download
-} from 'lucide-react';
-
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarTrigger,
-  useSidebar,
-} from '@/components/ui/sidebar';
+import { Home, Users, Building2, Key, Settings, LogOut, User, BookOpen, Download } from 'lucide-react';
+import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarTrigger, useSidebar } from '@/components/ui/sidebar';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
-
-const mainNavItems = [
-  { title: "Dashboard", url: "/", icon: Home },
-  { title: "Contacts", url: "/contacts", icon: Users },
-  { title: "Companies", url: "/companies", icon: Building2 },
-  { title: "Licenses", url: "/licenses", icon: Key },
-];
-
-const userNavItems = [
-  { title: "Profile", url: "/profile", icon: User },
-  { title: "Saved Views", url: "/saved-views", icon: BookOpen },
-  { title: "Export Jobs", url: "/exports", icon: Download },
-  { title: "Settings", url: "/settings", icon: Settings },
-];
-
+const mainNavItems = [{
+  title: "Dashboard",
+  url: "/",
+  icon: Home
+}, {
+  title: "Contacts",
+  url: "/contacts",
+  icon: Users
+}, {
+  title: "Companies",
+  url: "/companies",
+  icon: Building2
+}, {
+  title: "Licenses",
+  url: "/licenses",
+  icon: Key
+}];
+const userNavItems = [{
+  title: "Profile",
+  url: "/profile",
+  icon: User
+}, {
+  title: "Saved Views",
+  url: "/saved-views",
+  icon: BookOpen
+}, {
+  title: "Export Jobs",
+  url: "/exports",
+  icon: Download
+}, {
+  title: "Settings",
+  url: "/settings",
+  icon: Settings
+}];
 export function AppSidebar() {
-  const { state } = useSidebar();
+  const {
+    state
+  } = useSidebar();
   const location = useLocation();
-  const { signOut, profile } = useAuth();
+  const {
+    signOut,
+    profile
+  } = useAuth();
   const currentPath = location.pathname;
   const collapsed = state === 'collapsed';
-
   const isActive = (path: string) => {
     if (path === "/") {
       return currentPath === "/";
     }
     return currentPath.startsWith(path);
   };
-
   const getNavClassName = (path: string) => {
     const baseClasses = "sidebar-nav-item";
     if (isActive(path)) {
@@ -62,20 +62,15 @@ export function AppSidebar() {
     }
     return `${baseClasses} sidebar-nav-inactive`;
   };
-
   const handleSignOut = async () => {
     await signOut();
   };
-
-  return (
-    <Sidebar className={collapsed ? "w-16" : "w-64"} collapsible="icon">
+  return <Sidebar className={collapsed ? "w-16" : "w-64"} collapsible="icon">
       <div className="p-4 border-b border-sidebar-border">
-        {!collapsed && (
-          <h2 className="text-lg font-bold text-sidebar-primary">
+        {!collapsed && <h2 className="text-lg font-bold text-sidebar-primary">
             FolioGrid
-          </h2>
-        )}
-        <SidebarTrigger className={collapsed ? "mx-auto" : "ml-auto"} />
+          </h2>}
+        
       </div>
 
       <SidebarContent className="px-3 py-4">
@@ -85,20 +80,14 @@ export function AppSidebar() {
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {mainNavItems.map((item) => (
-                <SidebarMenuItem key={item.title}>
+              {mainNavItems.map(item => <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <NavLink 
-                      to={item.url} 
-                      end={item.url === "/"}
-                      className={getNavClassName(item.url)}
-                    >
+                    <NavLink to={item.url} end={item.url === "/"} className={getNavClassName(item.url)}>
                       <item.icon className="h-4 w-4" />
                       {!collapsed && <span>{item.title}</span>}
                     </NavLink>
                   </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
+                </SidebarMenuItem>)}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
@@ -109,48 +98,33 @@ export function AppSidebar() {
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {userNavItems.map((item) => (
-                <SidebarMenuItem key={item.title}>
+              {userNavItems.map(item => <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <NavLink 
-                      to={item.url} 
-                      className={getNavClassName(item.url)}
-                    >
+                    <NavLink to={item.url} className={getNavClassName(item.url)}>
                       <item.icon className="h-4 w-4" />
                       {!collapsed && <span>{item.title}</span>}
                     </NavLink>
                   </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
+                </SidebarMenuItem>)}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
 
       <div className="mt-auto p-3 border-t border-sidebar-border">
-        {profile && !collapsed && (
-          <div className="mb-3 px-3">
+        {profile && !collapsed && <div className="mb-3 px-3">
             <p className="text-sm font-medium text-sidebar-foreground">
               {profile.name || 'User'}
             </p>
             <p className="text-xs text-sidebar-foreground/60 capitalize">
               {profile.role}
             </p>
-          </div>
-        )}
+          </div>}
         
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={handleSignOut}
-          className={`w-full justify-start text-sidebar-foreground hover:text-sidebar-accent-foreground hover:bg-sidebar-accent ${
-            collapsed ? 'px-2' : 'px-3'
-          }`}
-        >
+        <Button variant="ghost" size="sm" onClick={handleSignOut} className={`w-full justify-start text-sidebar-foreground hover:text-sidebar-accent-foreground hover:bg-sidebar-accent ${collapsed ? 'px-2' : 'px-3'}`}>
           <LogOut className="h-4 w-4" />
           {!collapsed && <span className="ml-3">Sign Out</span>}
         </Button>
       </div>
-    </Sidebar>
-  );
+    </Sidebar>;
 }
