@@ -67,15 +67,15 @@ export function AppSidebar() {
   };
   return <Sidebar className={collapsed ? "w-16" : "w-64"} collapsible="icon">
       <div className="p-4 border-b border-sidebar-border">
-        {!collapsed && <h2 className="text-lg font-bold text-sidebar-primary">
-            FolioGrid
-          </h2>}
+        {!collapsed && <h2 className="text-lg font-bold text-sidebar-primary">cann.contact</h2>}
         
       </div>
 
       <SidebarContent className="px-3 py-4">
         <SidebarGroup>
-          <SidebarGroupLabel className={collapsed ? "sr-only" : ""}>Navigation</SidebarGroupLabel>
+          <SidebarGroupLabel className={collapsed ? "sr-only" : ""}>
+            Main Navigation
+          </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {mainNavItems.map(item => <SidebarMenuItem key={item.title}>
