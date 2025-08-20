@@ -19,3 +19,6 @@ port = 54322
 
 [functions.process-import]
 verify_jwt = true
+
+[functions.import-diagnostics]
+verify_jwt = false
