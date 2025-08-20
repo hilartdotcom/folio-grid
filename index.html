@@ -4,9 +4,20 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Cann.Contact</title>
+    <style>
+      /* Diagnostic banner visible before JS loads */
+      #no-js-banner { 
+        position: fixed; inset: 0 auto auto 0; 
+        background: #fef3c7; color: #7c2d12; 
+        padding: 6px 8px; font: 12px/1.2 ui-sans-serif,system-ui; 
+        border-bottom-right-radius: 8px; z-index: 9999;
+      }
+    </style>
   </head>
   <body class="bg-white text-zinc-950 dark:bg-zinc-900 dark:text-white">
+    <div id="no-js-banner">HTML loaded. Waiting for JS…</div>
     <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+    <!-- IMPORTANT: use relative path so dev preview under subpath still loads -->
+    <script type="module" src="src/main.tsx"></script>
   </body>
 </html>
