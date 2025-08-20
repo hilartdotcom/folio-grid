@@ -12,6 +12,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { useTableData } from '@/hooks/useTableData';
+import { ImportButton } from '@/components/admin/ImportButton';
 import { Search, Download, ExternalLink, ChevronLeft, ChevronRight } from 'lucide-react';
 
 export function LicensesTable() {
@@ -24,7 +25,7 @@ export function LicensesTable() {
     currentPage,
     setCurrentPage,
     pageSize,
-    setPageSize
+    refetch
   } = useTableData({ tableName: 'licenses' });
 
   const isActive = (expirationDate?: string) => {
@@ -66,10 +67,16 @@ export function LicensesTable() {
       <CardHeader>
         <div className="flex items-center justify-between">
           <CardTitle>Dispensary Licenses</CardTitle>
-          <Button variant="outline" size="sm">
-            <Download className="h-4 w-4 mr-2" />
-            Export CSV
-          </Button>
+          <div className="flex gap-2">
+            <ImportButton 
+              tableName="licenses" 
+              onImportComplete={refetch}
+            />
+            <Button variant="outline" size="sm">
+              <Download className="h-4 w-4 mr-2" />
+              Export CSV
+            </Button>
+          </div>
         </div>
         <div className="flex items-center gap-4 mt-4">
           <div className="relative flex-1 max-w-sm">

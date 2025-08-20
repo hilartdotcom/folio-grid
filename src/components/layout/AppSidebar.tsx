@@ -3,7 +3,9 @@ import { NavLink, useLocation } from 'react-router-dom';
 import { Home, Users, Building2, Key, Settings, LogOut, User, BookOpen, Download } from 'lucide-react';
 import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarTrigger, useSidebar } from '@/components/ui/sidebar';
 import { useAuth } from '@/contexts/AuthContext';
+import { useUserRoles } from '@/hooks/useUserRoles';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 const mainNavItems = [{
   title: "Dashboard",
   url: "/",
@@ -47,6 +49,7 @@ export function AppSidebar() {
     signOut,
     profile
   } = useAuth();
+  const { roles } = useUserRoles();
   const currentPath = location.pathname;
   const collapsed = state === 'collapsed';
   const isActive = (path: string) => {
@@ -114,9 +117,15 @@ export function AppSidebar() {
             <p className="text-sm font-medium text-sidebar-foreground">
               {profile.name || 'User'}
             </p>
-            <p className="text-xs text-sidebar-foreground/60 capitalize">
-              {profile.role}
-            </p>
+            {roles.length > 0 && (
+              <div className="flex flex-wrap gap-1 mt-1">
+                {roles.map(role => (
+                  <Badge key={role} variant="secondary" className="text-xs capitalize">
+                    {role}
+                  </Badge>
+                ))}
+              </div>
+            )}
           </div>}
         
         <Button variant="ghost" size="sm" onClick={handleSignOut} className={`w-full justify-start text-sidebar-foreground hover:text-sidebar-accent-foreground hover:bg-sidebar-accent ${collapsed ? 'px-2' : 'px-3'}`}>

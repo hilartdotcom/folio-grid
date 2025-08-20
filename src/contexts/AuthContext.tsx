@@ -18,7 +18,6 @@ interface UserProfile {
   id: string;
   user_id: string;
   name: string | null;
-  role: 'admin' | 'analyst' | 'viewer';
   theme: string | null;
   created_at: string;
   updated_at: string;
@@ -46,7 +45,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         return;
       }
 
-      setProfile(data);
+      setProfile(data as UserProfile);
     } catch (error) {
       console.error('Error fetching profile:', error);
     }

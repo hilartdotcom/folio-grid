@@ -12,6 +12,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { useTableData } from '@/hooks/useTableData';
+import { ImportButton } from '@/components/admin/ImportButton';
 import { Search, Download, ExternalLink, ChevronLeft, ChevronRight, Mail, Phone } from 'lucide-react';
 
 export function ContactsTable() {
@@ -24,7 +25,7 @@ export function ContactsTable() {
     currentPage,
     setCurrentPage,
     pageSize,
-    setPageSize
+    refetch
   } = useTableData({ tableName: 'contacts' });
 
   const formatDate = (dateString?: string) => {
@@ -64,10 +65,16 @@ export function ContactsTable() {
       <CardHeader>
         <div className="flex items-center justify-between">
           <CardTitle>Contacts</CardTitle>
-          <Button variant="outline" size="sm">
-            <Download className="h-4 w-4 mr-2" />
-            Export CSV
-          </Button>
+          <div className="flex gap-2">
+            <ImportButton 
+              tableName="contacts" 
+              onImportComplete={refetch}
+            />
+            <Button variant="outline" size="sm">
+              <Download className="h-4 w-4 mr-2" />
+              Export CSV
+            </Button>
+          </div>
         </div>
         <div className="flex items-center gap-4 mt-4">
           <div className="relative flex-1 max-w-sm">
