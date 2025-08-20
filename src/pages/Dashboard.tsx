@@ -1,4 +1,6 @@
 import React from 'react';
+import { Heading } from '@/components/catalyst/heading';
+import { Text } from '@/components/catalyst/text';
 import { KPICards } from '@/components/data/KPICards';
 import { RecentContactsTable } from '@/components/data/RecentContactsTable';
 
@@ -6,8 +8,8 @@ export default function Dashboard() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-foreground">Dashboard</h1>
-        <p className="text-muted-foreground">Welcome to your cann.contact dashboard</p>
+        <Heading level={1}>Dashboard</Heading>
+        <Text>Welcome to your cann.contact dashboard</Text>
       </div>
       
       <KPICards />

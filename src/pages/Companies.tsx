@@ -1,4 +1,6 @@
 import React from 'react';
+import { Heading } from '@/components/catalyst/heading';
+import { Text } from '@/components/catalyst/text';
 import { CompaniesTable } from '@/components/data/CompaniesTable';
 
 export default function Companies() {
@@ -6,8 +8,8 @@ export default function Companies() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-foreground">Companies</h1>
-          <p className="text-muted-foreground">Manage your business relationships</p>
+          <Heading level={1}>Companies</Heading>
+          <Text>Manage your business relationships</Text>
         </div>
       </div>
 

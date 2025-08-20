@@ -1,4 +1,6 @@
 import React from 'react';
+import { Heading } from '@/components/catalyst/heading';
+import { Text } from '@/components/catalyst/text';
 import { LicensesTable } from '@/components/data/LicensesTable';
 
 export default function Licenses() {
@@ -6,8 +8,8 @@ export default function Licenses() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-foreground">Licenses</h1>
-          <p className="text-muted-foreground">Track dispensary licenses and subscriptions</p>
+          <Heading level={1}>Licenses</Heading>
+          <Text>Track dispensary licenses and subscriptions</Text>
         </div>
       </div>
 

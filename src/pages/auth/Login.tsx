@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Eye, EyeOff, Mail, Lock } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/catalyst/button';
+import { Input, InputGroup } from '@/components/catalyst/input';
+import { Field, Label } from '@/components/catalyst/fieldset';
+import { AuthLayout } from '@/components/catalyst/auth-layout';
+import { Heading } from '@/components/catalyst/heading';
+import { Text } from '@/components/catalyst/text';
+import { Divider } from '@/components/catalyst/divider';
+import { Link } from '@/components/catalyst/link';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -35,83 +39,66 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-subtle p-4">
-      <Card className="w-full max-w-md card-elevated">
-        <CardHeader className="space-y-1 text-center">
-          <CardTitle className="text-2xl font-bold">Welcome back</CardTitle>
-          <CardDescription>
-            Sign in to your FolioGrid account
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <div className="relative">
-                <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="Enter your email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="pl-10"
-                  required
-                />
-              </div>
-            </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
-              <div className="relative">
-                <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                <Input
-                  id="password"
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Enter your password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="pl-10 pr-10"
-                  required
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-3 text-muted-foreground hover:text-foreground"
-                >
-                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                </button>
-              </div>
-            </div>
-
-            <Button
-              type="submit"
-              className="w-full btn-primary"
-              disabled={isLoading}
-            >
-              {isLoading ? "Signing in..." : "Sign In"}
-            </Button>
-          </form>
-
-          <div className="mt-6 text-center space-y-2">
-            <Link
-              to="/auth/forgot-password"
-              className="text-sm text-primary hover:text-primary-hover"
-            >
-              Forgot your password?
-            </Link>
-            <p className="text-sm text-muted-foreground">
-              Don't have an account?{" "}
-              <Link
-                to="/auth/signup"
-                className="text-primary hover:text-primary-hover font-medium"
-              >
-                Sign up
-              </Link>
-            </p>
+    <AuthLayout>
+      <div className="w-full max-w-sm">
+        <div className="text-center">
+          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-zinc-900 text-white text-lg font-medium mx-auto mb-6 dark:bg-white dark:text-zinc-900">
+            C
           </div>
-        </CardContent>
-      </Card>
-    </div>
+          <Heading level={1}>Welcome back</Heading>
+          <Text className="mt-2">Sign in to your cann.contact account</Text>
+        </div>
+
+        <Divider className="my-8" />
+
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <Field>
+            <Label>Email</Label>
+            <InputGroup>
+              <Mail data-slot="icon" />
+              <Input
+                type="email"
+                placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </InputGroup>
+          </Field>
+
+          <Field>
+            <Label>Password</Label>
+            <InputGroup>
+              <Lock data-slot="icon" />
+              <Input
+                type={showPassword ? "text" : "password"}
+                placeholder="Enter your password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-3 text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
+              >
+                {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              </button>
+            </InputGroup>
+          </Field>
+
+          <Button type="submit" disabled={isLoading} className="w-full">
+            {isLoading ? "Signing in..." : "Sign In"}
+          </Button>
+        </form>
+
+        <Text className="mt-6 text-center text-sm">
+          Don't have an account?{' '}
+          <Link href="/auth/signup" className="font-medium">
+            Sign up
+          </Link>
+        </Text>
+      </div>
+    </AuthLayout>
   );
 }
