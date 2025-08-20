@@ -172,17 +172,61 @@ export function ImportDiagnosticsModal({
     setValidating(true);
     
     try {
-      const { data: result, error } = await supabase.functions.invoke('import-diagnostics', {
-        body: {
-          tableName,
-          csvData: csvData || undefined,
-          googleSheetsUrl: googleSheetsUrl || undefined,
-          dryRun,
-          fileName: file?.name
-        }
-      });
+      // Get the current user session token
+      const { data: { session } } = await supabase.auth.getSession();
+      const authToken = session?.access_token;
 
-      if (error) throw error;
+      let response: Response;
+      
+      if (file && csvData) {
+        // File upload
+        const formData = new FormData();
+        formData.append('file', file);
+        
+        const headers: Record<string, string> = {};
+        if (authToken) {
+          headers['Authorization'] = `Bearer ${authToken}`;
+        }
+        
+        response = await fetch(`/api/imports/contacts/${dryRun ? 'validate' : 'commit'}`, {
+          method: 'POST',
+          headers,
+          body: formData
+        });
+      } else if (googleSheetsUrl) {
+        // Google Sheets URL
+        const headers: Record<string, string> = {
+          'Content-Type': 'application/json'
+        };
+        if (authToken) {
+          headers['Authorization'] = `Bearer ${authToken}`;
+        }
+        
+        response = await fetch(`/api/imports/contacts/${dryRun ? 'validate' : 'commit'}`, {
+          method: 'POST',
+          headers,
+          body: JSON.stringify({
+            googleSheetsUrl,
+            fileName: file?.name
+          })
+        });
+      } else {
+        throw new Error('No data source provided');
+      }
+
+      let result: any;
+      try {
+        result = await response.json();
+      } catch {
+        throw new Error(`Import failed (${response.status})`);
+      }
+
+      if (!response.ok || !result?.ok) {
+        const message = result?.message ?? `Import failed (${response.status})`;
+        const code = result?.code ?? 'UNKNOWN';
+        const id = result?.correlationId ? ` [${result.correlationId}]` : '';
+        throw new Error(`${code}: ${message}${id}`);
+      }
 
       setValidationResult(result);
       setStep('validation');
