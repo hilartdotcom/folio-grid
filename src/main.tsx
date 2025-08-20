@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { lazy, Suspense } from 'react'
 import { createRoot } from 'react-dom/client'
 import { createHashRouter, RouterProvider } from 'react-router-dom'
 import './index.css'
@@ -18,22 +18,23 @@ import './index.css'
 // Remove the no-JS banner if JS booted
 document.getElementById('no-js-banner')?.remove()
 
-function Home() { return <div className="p-6">Hello — the app mounted.</div> }
-function NotFound() { return <div className="p-6">404 — page not found.</div> }
+// Lazy load pages
+const Home = lazy(()=>import('./pages/Home'))
+const Contacts = lazy(()=>import('./pages/Contacts'))
+const Companies = lazy(()=>import('./pages/Companies'))
+const Licenses = lazy(()=>import('./pages/Licenses'))
+
+function NotFound(){ return <div className="p-6">404 — page not found.</div> }
 
 // Defensive ErrorBoundary so we never get a blank screen after mount
-class ErrorBoundary extends React.Component<{children: React.ReactNode}, {error?: Error}> {
-  constructor(props:any){ super(props); this.state = { error: undefined } }
-  static getDerivedStateFromError(error: Error) { return { error } }
-  componentDidCatch(error:any, info:any){ console.error('App crashed:', error, info) }
+class ErrorBoundary extends React.Component<{children:React.ReactNode},{error?:Error}>{
+  constructor(p:any){ super(p); this.state={} }
+  static getDerivedStateFromError(error:Error){ return { error } }
+  componentDidCatch(e:any, info:any){ console.error('App crashed:', e, info) }
   render(){
     if (this.state.error) {
-      return (
-        <div className="p-6 text-red-600">
-          <h1 className="text-xl font-semibold mb-2">Startup Error</h1>
-          <pre className="whitespace-pre-wrap text-sm">{String(this.state.error)}</pre>
-        </div>
-      )
+      return <div className="p-6 text-red-600"><h1 className="text-xl font-semibold mb-2">Startup Error</h1>
+        <pre className="text-sm whitespace-pre-wrap">{String(this.state.error)}</pre></div>
     }
     return this.props.children
   }
@@ -41,17 +42,18 @@ class ErrorBoundary extends React.Component<{children: React.ReactNode}, {error?
 
 // Use HashRouter to avoid base-path issues in preview environments
 const router = createHashRouter([
-  { path: '/', element: <Home /> },
-  { path: '*', element: <NotFound /> },
+  { path: '/', element: <Suspense fallback={<div className="p-6">Loading…</div>}><Home/></Suspense> },
+  { path: '/contacts', element: <Suspense fallback={<div className="p-6">Loading…</div>}><Contacts/></Suspense> },
+  { path: '/companies', element: <Suspense fallback={<div className="p-6">Loading…</div>}><Companies/></Suspense> },
+  { path: '/licenses', element: <Suspense fallback={<div className="p-6">Loading…</div>}><Licenses/></Suspense> },
+  { path: '*', element: <NotFound/> },
 ])
 
 const container = document.getElementById('root')
-if (!container) throw new Error('Missing #root element in index.html')
+if (!container) throw new Error('Missing #root')
 
 createRoot(container).render(
   <React.StrictMode>
-    <ErrorBoundary>
-      <RouterProvider router={router} />
-    </ErrorBoundary>
+    <ErrorBoundary><RouterProvider router={router} /></ErrorBoundary>
   </React.StrictMode>
 )
