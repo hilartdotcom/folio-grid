@@ -31,6 +31,8 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { apiPath } from '@/lib/api';
+import { HealthCheckCard } from './HealthCheckCard';
 import { 
   Upload, 
   Link2, 
@@ -188,7 +190,7 @@ export function ImportDiagnosticsModal({
           headers['Authorization'] = `Bearer ${authToken}`;
         }
         
-        response = await fetch(`/api/imports/contacts/${dryRun ? 'validate' : 'commit'}`, {
+        response = await fetch(apiPath(`/api/imports/contacts/${dryRun ? 'validate' : 'commit'}`), {
           method: 'POST',
           headers,
           body: formData
@@ -202,7 +204,7 @@ export function ImportDiagnosticsModal({
           headers['Authorization'] = `Bearer ${authToken}`;
         }
         
-        response = await fetch(`/api/imports/contacts/${dryRun ? 'validate' : 'commit'}`, {
+        response = await fetch(apiPath(`/api/imports/contacts/${dryRun ? 'validate' : 'commit'}`), {
           method: 'POST',
           headers,
           body: JSON.stringify({
