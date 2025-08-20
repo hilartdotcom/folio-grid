@@ -16,93 +16,116 @@ export type Database = {
     Tables: {
       companies: {
         Row: {
+          company_last_updated: string | null
           created_at: string
+          dba: string | null
           deleted_at: string | null
-          domain: string | null
-          hq_country: string | null
           id: string
-          industry: string | null
+          license_number: string | null
+          linkedin_url: string | null
           name: string
-          size: number | null
+          open_for_business: boolean | null
           tags: string[] | null
           updated_at: string
+          website_url: string | null
         }
         Insert: {
+          company_last_updated?: string | null
           created_at?: string
+          dba?: string | null
           deleted_at?: string | null
-          domain?: string | null
-          hq_country?: string | null
           id?: string
-          industry?: string | null
+          license_number?: string | null
+          linkedin_url?: string | null
           name: string
-          size?: number | null
+          open_for_business?: boolean | null
           tags?: string[] | null
           updated_at?: string
+          website_url?: string | null
         }
         Update: {
+          company_last_updated?: string | null
           created_at?: string
+          dba?: string | null
           deleted_at?: string | null
-          domain?: string | null
-          hq_country?: string | null
           id?: string
-          industry?: string | null
+          license_number?: string | null
+          linkedin_url?: string | null
           name?: string
-          size?: number | null
+          open_for_business?: boolean | null
           tags?: string[] | null
           updated_at?: string
+          website_url?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "companies_license_number_fkey"
+            columns: ["license_number"]
+            isOneToOne: false
+            referencedRelation: "licenses"
+            referencedColumns: ["license_number"]
+          },
+        ]
       }
       contacts: {
         Row: {
-          company_id: string | null
-          country: string | null
+          contact_last_updated: string | null
+          contact_unique_id: string | null
           created_at: string
           deleted_at: string | null
           email: string | null
           first_name: string
+          full_name: string | null
           id: string
+          job_category: string | null
           last_name: string
-          phone: string | null
+          license_number: string | null
+          linkedin_url: string | null
+          phone_number: string | null
           tags: string[] | null
-          title: string | null
           updated_at: string
         }
         Insert: {
-          company_id?: string | null
-          country?: string | null
+          contact_last_updated?: string | null
+          contact_unique_id?: string | null
           created_at?: string
           deleted_at?: string | null
           email?: string | null
           first_name: string
+          full_name?: string | null
           id?: string
+          job_category?: string | null
           last_name: string
-          phone?: string | null
+          license_number?: string | null
+          linkedin_url?: string | null
+          phone_number?: string | null
           tags?: string[] | null
-          title?: string | null
           updated_at?: string
         }
         Update: {
-          company_id?: string | null
-          country?: string | null
+          contact_last_updated?: string | null
+          contact_unique_id?: string | null
           created_at?: string
           deleted_at?: string | null
           email?: string | null
           first_name?: string
+          full_name?: string | null
           id?: string
+          job_category?: string | null
           last_name?: string
-          phone?: string | null
+          license_number?: string | null
+          linkedin_url?: string | null
+          phone_number?: string | null
           tags?: string[] | null
-          title?: string | null
           updated_at?: string
         }
         Relationships: [
           {
-            foreignKeyName: "contacts_company_id_fkey"
-            columns: ["company_id"]
+            foreignKeyName: "contacts_license_number_fkey"
+            columns: ["license_number"]
             isOneToOne: false
-            referencedRelation: "companies"
-            referencedColumns: ["id"]
+            referencedRelation: "licenses"
+            referencedColumns: ["license_number"]
           },
         ]
       }
@@ -142,61 +165,119 @@ export type Database = {
         }
         Relationships: []
       }
+      import_logs: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          error_message: string | null
+          file_name: string | null
+          id: string
+          import_type: string
+          rows_failed: number
+          rows_imported: number
+          rows_processed: number
+          rows_updated: number
+          source_url: string | null
+          status: string
+          table_name: string
+          user_id: string
+          warnings: Json | null
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          error_message?: string | null
+          file_name?: string | null
+          id?: string
+          import_type: string
+          rows_failed?: number
+          rows_imported?: number
+          rows_processed?: number
+          rows_updated?: number
+          source_url?: string | null
+          status?: string
+          table_name: string
+          user_id: string
+          warnings?: Json | null
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          error_message?: string | null
+          file_name?: string | null
+          id?: string
+          import_type?: string
+          rows_failed?: number
+          rows_imported?: number
+          rows_processed?: number
+          rows_updated?: number
+          source_url?: string | null
+          status?: string
+          table_name?: string
+          user_id?: string
+          warnings?: Json | null
+        }
+        Relationships: []
+      }
       licenses: {
         Row: {
-          company_id: string | null
+          country: string | null
           created_at: string
           deleted_at: string | null
-          end_date: string | null
+          expiration_date: string | null
+          full_address: string | null
           id: string
-          license_key: string
-          notes: string | null
-          product: string
-          seats: number | null
-          start_date: string | null
-          status: Database["public"]["Enums"]["license_status"]
+          issue_date: string | null
+          issued_by: string | null
+          issued_by_website: string | null
+          last_updated: string | null
+          license_category: string | null
+          license_market: string | null
+          license_number: string | null
+          license_type: string | null
+          state: string | null
           tags: string[] | null
           updated_at: string
         }
         Insert: {
-          company_id?: string | null
+          country?: string | null
           created_at?: string
           deleted_at?: string | null
-          end_date?: string | null
+          expiration_date?: string | null
+          full_address?: string | null
           id?: string
-          license_key: string
-          notes?: string | null
-          product: string
-          seats?: number | null
-          start_date?: string | null
-          status?: Database["public"]["Enums"]["license_status"]
+          issue_date?: string | null
+          issued_by?: string | null
+          issued_by_website?: string | null
+          last_updated?: string | null
+          license_category?: string | null
+          license_market?: string | null
+          license_number?: string | null
+          license_type?: string | null
+          state?: string | null
           tags?: string[] | null
           updated_at?: string
         }
         Update: {
-          company_id?: string | null
+          country?: string | null
           created_at?: string
           deleted_at?: string | null
-          end_date?: string | null
+          expiration_date?: string | null
+          full_address?: string | null
           id?: string
-          license_key?: string
-          notes?: string | null
-          product?: string
-          seats?: number | null
-          start_date?: string | null
-          status?: Database["public"]["Enums"]["license_status"]
+          issue_date?: string | null
+          issued_by?: string | null
+          issued_by_website?: string | null
+          last_updated?: string | null
+          license_category?: string | null
+          license_market?: string | null
+          license_number?: string | null
+          license_type?: string | null
+          state?: string | null
           tags?: string[] | null
           updated_at?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "licenses_company_id_fkey"
-            columns: ["company_id"]
-            isOneToOne: false
-            referencedRelation: "companies"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       profiles: {
         Row: {
