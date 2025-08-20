@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Catalyst tokens and resets will be added later */
+@import './styles/catalyst.css';
+
 /* Catalyst-inspired design system with ultra-modern look and feel */
 
 @layer base {
